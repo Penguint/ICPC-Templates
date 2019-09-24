@@ -10,5 +10,6 @@
 
 ## 数论
 
-* [扩展gcd](shu-lun/kuo-zhan-gcd.md)
+* [扩展gcd](shu-lun/kuo-zhan-gcd/README.md)
+  * [Untitled](shu-lun/kuo-zhan-gcd/untitled.md)
 
