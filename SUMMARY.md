@@ -4,9 +4,11 @@
 
 ## 图论
 
-* [Dijkstra](图论/Dijkstra.md)
+* [Dijkstra](tu-lun/dijkstra/README.md)
+  * [Dij1](tu-lun/dijkstra/dij1/README.md)
+    * [Dij1.1](tu-lun/dijkstra/dij1/dij1.1.md)
 
 ## 数论
 
-* [扩展gcd](数论/扩展gcd.md)
+* [扩展gcd](shu-lun/kuo-zhan-gcd.md)
 
