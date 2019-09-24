@@ -1,12 +1,12 @@
 # Table of contents
 
-* [Initial page](README.md)
+* [目录](README.md)
 
-## tulun
+## 图论
 
-* [Untitled](tulun/untitled.md)
+* [Dijkstra](图论/Dijkstra.md)
 
-## shulun
+## 数论
 
-* [Untitled](shulun/untitled.md)
+* [扩展gcd](数论/扩展gcd.md)
 
