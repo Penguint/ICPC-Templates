@@ -1,6 +1,6 @@
-# ICPC-Templates
+<div align="center">
 
-ZJUT12梦想家的ICPC模板
+# ZJUT12梦想家的ICPC模板
 
 ![ICPC](.gitbook/assets/icpc-logo.png)
 
