@@ -1,5 +1,237 @@
-# 高精度
- - v1.4
+
+# 目录  <!-- omit in toc -->
+- [1 字符串](#1-字符串)
+- [2 数学](#2-数学)
+  - [2.1 GCD & LCM](#21-gcd--lcm)
+    - [2.1.1 非递归 GCD](#211-非递归-gcd)
+    - [2.1.2 递归 GCD](#212-递归-gcd)
+    - [2.1.3 LCM](#213-lcm)
+  - [2.2 扩展GCD](#22-扩展gcd)
+- [3 数据结构](#3-数据结构)
+  - [3.1 单调队列](#31-单调队列)
+  - [3.2 ZKW线段树](#32-zkw线段树)
+- [4 图论](#4-图论)
+- [5 动态规划](#5-动态规划)
+- [6 计算几何](#6-计算几何)
+- [7 其他](#7-其他)
+  - [7.1 高精度](#71-高精度)
+
+
+# 1 字符串
+
+
+# 2 数学
+
+## 2.1 GCD & LCM
+ - require: c++98
+ - [x] 封装
+ - [ ] 已测试
+
+gcd: 两个整数的最大公因数 (greatest common divisor)   
+lcm: 两个整数的最小公倍数 (least common multiple)
+
+非递归版本参考于GNU `__gcd()` 源码。  
+递归版本参考于 `std::gcd()` 源码。
+
+### 相关函数  <!-- omit in toc -->
+ - `std::gcd()`
+   - 定义在 `<numeric>`
+   - require: C++17
+ - `std::lcm()`
+   - 定义在 `<numeric>`
+   - require: C++17
+ - `__gcd()`
+   - 定义在`<algorithm>`
+   - require: C++98, GNU平台
+
+### 2.1.1 非递归 GCD
+```C++
+template <typename T> T gcd(T m, T n) {
+    while (n != 0) {
+        T t = m % n;
+        m = n;
+        n = t;
+    }
+    return m;
+}
+```
+
+### 2.1.2 递归 GCD
+```C++
+template <typename T> T gcd(T m, T n) {
+    return m == 0 ? n : n == 0 ? m : gcd(n, m % n);
+}
+```
+
+### 2.1.3 LCM
+```C++
+template <typename T> T lcm(T m, T n) {
+    return (m != 0 && n != 0) ? (m / gcd(m, n)) * n : 0;
+}
+```
+
+## 2.2 扩展GCD
+
+
+
+
+
+# 3 数据结构
+
+## 3.1 单调队列
+ - require: C++98
+ - [x] 封装
+ - [x] 已测试
+
+这个版本相当于是对STL库中 `deque` 的重写，但引入了比较模板类。实际使用场景比较灵活，可能并不能照搬，但可以作为参考，并在STL的 `deque` 太慢时作为替换。
+
+```C++
+template <typename T, typename Cmp = less_equal<T> > struct Monoq {
+    Cmp comp;
+    const static int N = MAXN;
+    T q[N];
+    int ft, bk;
+    inline Monoq() : ft(0), bk(0) {}
+    inline bool empty() { return bk - ft <= 0; }
+    inline int size() { return bk - ft; }
+    inline T front() { return q[ft]; }
+    inline T back() { return q[bk - 1]; }
+    inline void push(T x) {
+        while (!empty() && comp(x, back()))
+            bk--;
+        q[bk++] = x;
+    }
+    inline void pop_back() {
+        if (!empty())
+            bk--;
+    }
+    inline void pop_front() {
+        if (!empty())
+            ft++;
+    }
+    inline void clear() { ft = 0, bk = 0; }
+    inline T *begin() { return q + ft; }
+    inline T *end() { return q + bk; }
+};
+
+int a[50] = {3, 6, 7, 5, 3, 5, 6, 2, 9, 1, 2, 7, 0, 9, 3, 6, 0, 6, 2, 6};
+struct MyCmp {
+    inline bool operator()(int x, int y) {
+        return a[x] <= a[y]; // strict increase monoq
+        // return a[x] >= a[y]; // strict decrease monoq
+    }
+};
+
+Monoq<int, MyCmp> q;
+```
+
+## 3.2 ZKW线段树
+ - require: C++98
+ - HDU1698
+ - [ ] 封装
+ - [x] 已测试
+
+
+区间修改 + 区间查询
+```C++
+#include <bits/stdc++.h>
+using namespace std;
+
+const int M = 1 << 17;
+const int INF = 1e9;
+
+int T[M + M + 1], lazy[M + M + 1];
+
+void modify(int ll, int rr, int v) {
+    ll += M - 1, rr += M + 1;
+    for (int i = 20, l, r; i; i--) {
+        l = ll >> i, r = rr >> i;
+        if (lazy[l]) {
+            lazy[l * 2] = lazy[l * 2 + 1] = lazy[l];
+            T[l * 2] = T[l * 2 + 1] = lazy[l] * (1 << (i - 1));
+            lazy[l] = 0;
+        }
+        if (lazy[r]) {
+            lazy[r * 2] = lazy[r * 2 + 1] = lazy[r];
+            T[r * 2] = T[r * 2 + 1] = lazy[r] * (1 << (i - 1));
+            lazy[r] = 0;
+        }
+    }
+    for (int l = ll, r = rr, num = 1; l > 1; l >>= 1, r >>= 1, num <<= 1) {
+        if ((l ^ r ^ 1) > 1) {
+            if (~l & 1)
+                lazy[l ^ 1] = v, T[l ^ 1] = v * num;
+            if (r & 1)
+                lazy[r ^ 1] = v, T[r ^ 1] = v * num;
+        }
+        T[l >> 1] = T[l] + T[l ^ 1];
+        T[r >> 1] = T[r] + T[r ^ 1];
+    }
+}
+
+int query(int l, int r) {
+    int ansL = 0, ansR = 0, ln = 0, rn = 0, nn = 1;
+    for (l += M - 1, r += M + 1; l ^ r ^ 1; l >>= 1, r >>= 1, nn <<= 1) {
+        if (lazy[l])
+            ansL = lazy[l] * ln;
+        if (lazy[r])
+            ansR = lazy[r] * rn;
+        if (~l & 1)
+            ansL += T[l ^ 1], ln += nn;
+        if (r & 1)
+            ansR += T[r ^ 1], rn += nn;
+    }
+    for (; l; l >>= 1, r >>= 1) {
+        if (lazy[l])
+            ansL = lazy[l] * ln;
+        if (lazy[r])
+            ansR = lazy[r] * rn;
+    }
+    return ansL + ansR;
+}
+
+int main() {
+    ios::sync_with_stdio(false);
+    int t;
+    cin >> t;
+    for (int ca = 1; ca <= t; ca++) {
+        int n, q;
+        cin >> n >> q;
+        modify(1, n, 1);
+        while (q--) {
+            int x, y, z;
+            cin >> x >> y >> z;
+            modify(x, y, z);
+        }
+        printf("Case %d: The total value of the hook is %d.\n", ca,
+               query(1, n));
+    }
+}
+```
+
+
+
+
+# 4 图论
+
+
+
+
+# 5 动态规划
+
+
+
+
+# 6 计算几何
+
+
+
+
+
+
+# 7 其他
+
+## 7.1 高精度
  - require: C++11
  - [x] 封装
  - [ ] 已测试
@@ -191,3 +423,4 @@ int main() {
     // fclose(stdout);
 }
 ```
+
