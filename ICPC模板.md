@@ -16,9 +16,17 @@
 - [7 其他](#7-其他)
   - [7.1 高精度](#71-高精度)
 
+<!-- 分页符 -->
+<div style="page-break-after: always;"></div>
 
 # 1 字符串
 
+
+
+
+
+<!-- 分页符 -->
+<div style="page-break-after: always;"></div>
 
 # 2 数学
 
@@ -75,6 +83,8 @@ template <typename T> T lcm(T m, T n) {
 
 
 
+<!-- 分页符 -->
+<div style="page-break-after: always;"></div>
 
 # 3 数据结构
 
@@ -212,22 +222,28 @@ int main() {
 
 
 
+<!-- 分页符 -->
+<div style="page-break-after: always;"></div>
+
 # 4 图论
 
 
 
+<!-- 分页符 -->
+<div style="page-break-after: always;"></div>
 
 # 5 动态规划
 
-
-
+<!-- 分页符 -->
+<div style="page-break-after: always;"></div>
 
 # 6 计算几何
 
 
 
 
-
+<!-- 分页符 -->
+<div style="page-break-after: always;"></div>
 
 # 7 其他
 
