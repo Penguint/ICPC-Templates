@@ -3,13 +3,11 @@
 - [1 字符串](#1-字符串)
 - [2 数学](#2-数学)
   - [2.1 GCD & LCM](#21-gcd--lcm)
-    - [2.1.1 非递归 GCD](#211-非递归-gcd)
-    - [2.1.2 递归 GCD](#212-递归-gcd)
-    - [2.1.3 LCM](#213-lcm)
   - [2.2 扩展GCD](#22-扩展gcd)
 - [3 数据结构](#3-数据结构)
   - [3.1 单调队列](#31-单调队列)
   - [3.2 ZKW线段树](#32-zkw线段树)
+  - [3.3 并查集](#33-并查集)
 - [4 图论](#4-图论)
 - [5 动态规划](#5-动态规划)
 - [6 计算几何](#6-计算几何)
@@ -17,6 +15,9 @@
   - [7.1 高精度](#71-高精度)
   - [7.2 二分答案](#72-二分答案)
   - [7.3 Berlekamp-Massey](#73-berlekamp-massey)
+  - [7.4 Java高精度根号](#74-java高精度根号)
+  - [7.5 博弈论](#75-博弈论)
+  - [7.6 蔡勒公式](#76-蔡勒公式)
 
 <!-- 分页符 -->
 <div style="page-break-after: always;"></div>
@@ -54,7 +55,7 @@ lcm: 两个整数的最小公倍数 (least common multiple)
    - 定义在`<algorithm>`
    - require: C++98, GNU平台
 
-### 2.1.1 非递归 GCD
+### 2.1.1 非递归 GCD  <!-- omit in toc -->
 ```C++
 template <typename T> T gcd(T m, T n) {
     while (n != 0) {
@@ -66,14 +67,14 @@ template <typename T> T gcd(T m, T n) {
 }
 ```
 
-### 2.1.2 递归 GCD
+### 2.1.2 递归 GCD  <!-- omit in toc -->
 ```C++
 template <typename T> T gcd(T m, T n) {
     return m == 0 ? n : n == 0 ? m : gcd(n, m % n);
 }
 ```
 
-### 2.1.3 LCM
+### 2.1.3 LCM  <!-- omit in toc -->
 ```C++
 template <typename T> T lcm(T m, T n) {
     return (m != 0 && n != 0) ? (m / gcd(m, n)) * n : 0;
@@ -219,6 +220,34 @@ int main() {
                query(1, n));
     }
 }
+```
+
+## 3.3 并查集
+ - require:
+ - [x] 封装
+ - [x] 测试
+
+
+```C++
+using namespace std;
+
+class UnionFindSet {
+  public:
+    int f[150001];
+    int n;
+    void clear() {
+        for (int i = 0; i < n; i++)
+            f[i] = i;
+    }
+    int find(int x) {
+        if (f[x] != x)
+            f[x] = find(f[x]);
+        return f[x];
+    }
+    void Union(int x, int y) {
+        f[find(x)] = find(y);
+    }
+} animal;
 ```
 
 
@@ -473,8 +502,7 @@ Tx upperbound(Ty(getval)(Tx), Tx first, Tx last, const Ty &val,
         if (comp(val, getval(middle)))
             len = half;
         else {
-            first = middle;
-            ++first;
+            first = middle + 1;
             len = len - half - 1;
         }
     }
@@ -489,8 +517,7 @@ Tx lowerbound(Ty(getval)(Tx), Tx first, Tx last, const Ty &val,
         Tx half = len >> 1;
         Tx middle = first + half;
         if (comp(getval(middle), val)) {
-            first = middle;
-            first++;
+            first = middle + 1;
             len = len - half - 1;
         } else
             len = half;
@@ -614,3 +641,114 @@ int main()
 }
 ```
 
+## 7.4 Java高精度根号
+ - require: Java 8
+ - [x] 封装
+ - [ ] 测试
+
+牛顿迭代法 (Newton-Raphson method)
+
+```Java
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
+public class Main {
+
+    private static final BigDecimal SQRT_DIG = new BigDecimal(1000);
+    private static final BigDecimal SQRT_PRE = new BigDecimal(10).pow(SQRT_DIG.intValue());
+
+    private static BigDecimal sqrtNewtonRaphson(BigDecimal c, BigDecimal xn, BigDecimal precision) {
+        BigDecimal fx = xn.pow(2).add(c.negate());
+        BigDecimal fpx = xn.multiply(new BigDecimal(2));
+        BigDecimal xn1 = fx.divide(fpx, 2 * SQRT_DIG.intValue(), RoundingMode.HALF_DOWN);
+        xn1 = xn.add(xn1.negate());
+        BigDecimal currentSquare = xn1.pow(2);
+        BigDecimal currentPrecision = currentSquare.subtract(c);
+        currentPrecision = currentPrecision.abs();
+        if (currentPrecision.compareTo(precision) <= -1)
+            return xn1;
+        return sqrtNewtonRaphson(c, xn1, precision);
+    }
+
+    public static BigDecimal bigSqrt(BigDecimal c) {
+        return sqrtNewtonRaphson(c, new BigDecimal(1), new BigDecimal(1).divide(SQRT_PRE));
+    }
+}
+```
+
+## 7.5 博弈论
+
+### 7.5.1 Bash Game  <!-- omit in toc -->
+
+有一堆 `n` 个物品，两个人轮流从中取物，规定每次取 `[1, m]` 个，最后取光者为胜。
+
+```C++
+int Bash(int n, int m){
+    return n % (m + 1);
+}
+```
+
+### 7.5.2 Wythoff Game  <!-- omit in toc -->
+
+有两堆物品，数量分别为 `a` 和 `b` ，两人轮流从其中一堆取 `[1, +∞]` 个，或从两堆中同时取相等的 `[1, +∞]` 个物品，最后取光者为胜。
+
+```C++
+int Wythoff(int a, int b) {
+    double k = (sqrt(5.0) + 1) / 2;
+    return floor(k * abs(a - b)) != min(a,b);
+}v
+```
+
+### 7.5.3 Nim Game  <!-- omit in toc -->
+
+有若干堆物品，每堆有 `v[i]` 个物品，双方轮流从中取物品，每一次从一堆物品中取 `[1, v[i]]` 个，取到最后一件物品的人获胜。
+
+```C++
+int Nim(vector<int> v) {
+    int res = 0;
+    for (int i : v)
+        res ^= i;
+    return res;
+}
+```
+
+## 7.6 蔡勒公式
+ - require:
+ - [x] 封装
+ - [ ] 测试
+
+输入年、月、日，计算格里高利历的星期。
+
+有两种表示星期的方式：
+
+ - Zeller
+    |     |           |
+    | --- | --------- |
+    | 0   | Saturday  |
+    | 1   | Sunday    |
+    | 2   | Monday    |
+    | 3   | Tuesday   |
+    | 4   | Wendesday |
+    | 5   | Thursday  |
+    | 6   | Friday    |
+
+ - ISO week date
+    |     |           |
+    | --- | --------- |
+    | 1   | Monday    |
+    | 2   | Tuesday   |
+    | 3   | Wendesday |
+    | 4   | Thursday  |
+    | 5   | Friday    |
+    | 6   | Saturday  |
+    | 7   | Sunday    |
+
+```C++
+int Zeller(int y, int m, int d) {
+    if (m == 1 || m == 2)
+        m += 12, y = y - 1;
+    int h = (d + 13 * (m + 1) / 5 + y + y / 4 - y / 100 + y / 400) % 7;
+    int w = (h + 5) % 7 + 1; // ISO week date (1 = Monday, 7 = Sunday)
+    return w;
+}
+```
