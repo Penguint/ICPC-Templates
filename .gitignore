@@ -1,1 +1,4 @@
-_book
+*.html
+*.pdf
+!assets/*
+!reference/*
