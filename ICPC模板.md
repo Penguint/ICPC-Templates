@@ -56,7 +56,7 @@ lcm: 两个整数的最小公倍数 (least common multiple)
    - require: C++98, GNU平台
 
 ### 2.1.1 非递归 GCD  <!-- omit in toc -->
-```C++
+```cpp
 template <typename T> T gcd(T m, T n) {
     while (n != 0) {
         T t = m % n;
@@ -68,14 +68,14 @@ template <typename T> T gcd(T m, T n) {
 ```
 
 ### 2.1.2 递归 GCD  <!-- omit in toc -->
-```C++
+```cpp
 template <typename T> T gcd(T m, T n) {
     return m == 0 ? n : n == 0 ? m : gcd(n, m % n);
 }
 ```
 
 ### 2.1.3 LCM  <!-- omit in toc -->
-```C++
+```cpp
 template <typename T> T lcm(T m, T n) {
     return (m != 0 && n != 0) ? (m / gcd(m, n)) * n : 0;
 }
@@ -98,7 +98,7 @@ template <typename T> T lcm(T m, T n) {
 
 这个版本相当于是对STL库中 `deque` 的重写，但引入了比较模板类。实际使用场景比较灵活，可能并不能照搬，但可以作为参考，并在STL的 `deque` 太慢时作为替换。
 
-```C++
+```cpp
 template <typename T, typename Cmp = less_equal<T> > struct Monoq {
     Cmp comp;
     const static int N = MAXN;
@@ -146,7 +146,7 @@ Monoq<int, MyCmp> q;
 
 
 区间修改 + 区间查询
-```C++
+```cpp
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -228,7 +228,7 @@ int main() {
  - [x] 测试
 
 
-```C++
+```cpp
 using namespace std;
 
 class UnionFindSet {
@@ -284,7 +284,7 @@ class UnionFindSet {
  - [ ] 测试
 
 高精度四则运算。
-```C++
+```cpp
 #include <bits/stdc++.h>
 typedef long long ll;
 using namespace std;
@@ -480,7 +480,7 @@ int main() {
 
 ### 离散  <!-- omit in toc -->
 
-```C++
+```cpp
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -537,7 +537,7 @@ int main() { cout << upperbound(geta, 0, 10, 1, dec<int>); }
 
 求解线性递推第 `n` 项， 下标从 `0` 开始
 
-```C++
+```cpp
 #include <bits/stdc++.h>
  
 using namespace std;
@@ -682,8 +682,8 @@ public class Main {
 
 有一堆 `n` 个物品，两个人轮流从中取物，规定每次取 `[1, m]` 个，最后取光者为胜。
 
-```C++
-int Bash(int n, int m){
+```cpp
+int Bash(int n, int m) {
     return n % (m + 1);
 }
 ```
@@ -692,18 +692,18 @@ int Bash(int n, int m){
 
 有两堆物品，数量分别为 `a` 和 `b` ，两人轮流从其中一堆取 `[1, +∞]` 个，或从两堆中同时取相等的 `[1, +∞]` 个物品，最后取光者为胜。
 
-```C++
+```cpp
 int Wythoff(int a, int b) {
     double k = (sqrt(5.0) + 1) / 2;
     return floor(k * abs(a - b)) != min(a,b);
-}v
+}
 ```
 
 ### 7.5.3 Nim Game  <!-- omit in toc -->
 
 有若干堆物品，每堆有 `v[i]` 个物品，双方轮流从中取物品，每一次从一堆物品中取 `[1, v[i]]` 个，取到最后一件物品的人获胜。
 
-```C++
+```cpp
 int Nim(vector<int> v) {
     int res = 0;
     for (int i : v)
@@ -743,7 +743,7 @@ int Nim(vector<int> v) {
     | 6   | Saturday  |
     | 7   | Sunday    |
 
-```C++
+```cpp
 int Zeller(int y, int m, int d) {
     if (m == 1 || m == 2)
         m += 12, y = y - 1;

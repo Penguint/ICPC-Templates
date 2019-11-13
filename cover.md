@@ -1,6 +1,6 @@
 <div style="text-align: center;">
 
-# ZJUT12梦想家的ICPC模板  <!-- omit in toc -->
+# ZJUT12的ICPC模板  <!-- omit in toc -->
 
 ![ICPC](assets/icpc-logo.png)
 
