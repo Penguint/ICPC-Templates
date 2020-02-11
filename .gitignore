@@ -2,3 +2,4 @@
 *.pdf
 !assets/*
 !reference/*
+.vscode
