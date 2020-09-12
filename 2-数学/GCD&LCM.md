@@ -20,14 +20,15 @@ lcm: 最小公倍数 (least common multiple)
    - 定义在`<algorithm>`
    - require: C++98, GNU平台
 
-### 递归 GCD
+### 递归 GCD $O(\log n)$
+
 ```cpp
 template <class T> T gcd(T m, T n) {
     return m == 0 ? n : n == 0 ? m : gcd(n, m % n);
 }
 ```
 
-### 非递归 GCD
+### 非递归 GCD $O(\log n)$
 ```cpp
 template <class T> T gcd(T a, T b) {
     while (b != 0) {
@@ -39,8 +40,9 @@ template <class T> T gcd(T a, T b) {
 }
 ```
 
-### LCM
+### LCM $O(\log n)$
 ```cpp
+// gcd(m, n)
 template <class T> T lcm(T m, T n) {
     return (m != 0 && n != 0) ? (m / gcd(m, n)) * n : 0;
 }
