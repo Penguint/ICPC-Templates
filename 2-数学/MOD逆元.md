@@ -19,10 +19,8 @@ $a*x+p*y = 1$
 
 ```cpp
 int inv(int n, int mod = mod) {
-    int x, y;
-    if (exgcd(n, mod, x, y) != 1)
-        return -1;
-    return x;
+    int x, y, g = exgcd(n, mod, x, y);
+    return g == -1 ? -1 : (x + mod) % mod;
 }
 ```
 

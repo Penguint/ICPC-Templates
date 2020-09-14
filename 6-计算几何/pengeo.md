@@ -78,6 +78,12 @@ P2 point_proj_line(P2 p, P2 a, P2 b){
 db rad(P2 a,P2 b){ // 向量夹角 a -> b
     return atan2(det(a,b),dot(a,b));
 }
+db area(vector<P2> p) { // 多边形有向面积
+    db s = 0;
+    for (int i = 0; i < (int)p.size(); i++)
+        s += det(p[i], p[(i + 1) % N]);
+    return s
+}
 
 // radius/degree conversion
 db dtor(db d) { return d * PI / 180; }
