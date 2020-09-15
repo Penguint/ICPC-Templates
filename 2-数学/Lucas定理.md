@@ -36,7 +36,16 @@ int lucas(ll n, ll m, int P = mod) {
 计算 `C(n, m) % mod` 
 
 ```c++
-// ll CRT();
+ll CRT(int n, LL* a, LL* m) {
+  ll M = 1, p = 0;
+  for (int i = 1; i <= n; i++) M = M * m[i];
+  for (int i = 1; i <= n; i++) {
+    LL w = M / m[i], x, y;
+    exgcd(w, m[i], x, y);
+    p = (p + a[i] * w * x % mod) % mod;
+  }
+  return (p % mod + mod) % mod;
+}
 ll calc(ll n, ll x, ll P) {
   if (!n) return 1;
   LL s = 1;

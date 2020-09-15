@@ -14,10 +14,11 @@ vector<ll> d;
 vector<int> vis;
 void Dijkstra(int s) {
     d[s] = 0;
-    priority_queue<pii> Q;
-    Q.push({-d[s], s});
-    while (!Q.empty()) {
-        int u = Q.top().second; Q.pop();
+    priority_queue<pii> q;
+    q.push({-d[s], s});
+    while (!q.empty()) {
+        int u = q.top().second;
+        q.pop();
         if (vis[u]) continue;
         vis[u] = 1;
         for (Edge e : G[u]) {
@@ -25,7 +26,7 @@ void Dijkstra(int s) {
             ll w = e.w;
             if (d[v] > d[u] + w) {
                 d[v] = d[u] + w;
-                Q.push({-d[v], v});
+                q.push({-d[v], v});
             }
         }
     }
