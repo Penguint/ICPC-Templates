@@ -96,12 +96,12 @@ inline bool is_range_cross(db a1, db a2, db b1, db b2) {
     return cmp(max(min(a1, a2), min(b1, b2)), min(max(a1, a2), max(b1, b2))) <= 1; // contains touch point
 }
 
-inline bool is_rect_cross(const p2 &p1, const p2 &p2, const p2 &q1, const p2 &q2){
+inline bool is_rect_cross(const p2 &p1, const p2 &p2, const p2 &q1, const p2 &q2) {
     return is_range_cross(p1.x, p2.x, q1.x, q2.x) &&
            is_range_cross(p1.y, p2.y, q1.y, q2.y);
 }
 
-inline bool is_same_side(Line l, p2 a, p2 b) {
+inline bool is_same_side(Line2 l, p2 a, p2 b) {
     return sgn(det(l.b - l.a, a - l.a)) * sgn(det(l.b - l.a, b - s.a)) <= 0;
 }
 
@@ -111,17 +111,11 @@ inline bool is_segment_cross(Line2 a, Line2 b) {
            is_same_side(b, a.a, a.b);
 }
 
-p2 intersection(Line a, Line b) {
-    // db tmpLeft,tmpRight;
-    // tmpLeft = (q2.x - q1.x) * (p1.y - p2.y) - (p2.x - p1.x) * (q1.y - q2.y);
-    // tmpRight = (p1.y - q1.y) * (p2.x - p1.x) * (q2.x - q1.x) + q1.x * (q2.y - q1.y) * (p2.x - p1.x) - p1.x * (p2.y - p1.y) * (q2.x - q1.x);
-
-    // x = (int)((double)tmpRight/(double)tmpLeft);
-
-    // tmpLeft = (p1.x - p2.x) * (q2.y - q1.y) - (p2.y - p1.y) * (q1.x - q2.x);
-    // tmpRight = p2.y * (p1.x - p2.x) * (q2.y - q1.y) + (q2.x- p2.x) * (q2.y - q1.y) * (p1.y - p2.y) - q2.y * (q1.x - q2.x) * (p2.y - p1.y); 
-    // y = (int)(tmpRight/tmpLeft);
+p2 intersection(Line2 a, Line2 b) {
+    db t = det((b.b - b.a), (a.a - b.a)) / det((a.b - a.a), (b.b - b.a));
+    return a.a + (a.b - a.a) * t;
 }
+
 // } end 2D Line =====
 
 // ===== Polygon {
@@ -340,6 +334,7 @@ bool is_same_plain(p3 a, p3 b, p3 c) { return sgn(vol(a, b, c)) == 0; }
 // } end 3D Point / Vector =====
 
 // ===== 3D Line {
+
 struct Line3 {
     p3 a, b;
     Line3(p3 a, p3 b) : a(a), b(b) {}
