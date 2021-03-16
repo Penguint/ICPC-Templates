@@ -21,7 +21,8 @@ typedef vector<long long> VI;
 typedef long long ll;
 typedef pair<long long,long long> PII;
 const ll mod=1e9+7;
-ll powmod(ll a,ll b) {ll res=1;a%=mod; assert(b>=0); for(;b;b>>=1){if(b&1)res=res*a%mod;a=a*a%mod;}return res;}
+ll powmod(ll a,ll b) {ll res=1;a%=mod; assert(b>=0); 
+for(;b;b>>=1){if(b&1)res=res*a%mod;a=a*a%mod;}return res;}
 // head
  
 long long n;
@@ -104,7 +105,8 @@ namespace linear_seq
 int main()
 {
     while(~scanf("%I64d", &n))
-    {   printf("%I64d\n",linear_seq::gao(VI{1,5,11,36,95,281,781,2245,6336,18061, 51205},n-1));
+    {   printf("%I64d\n",linear_seq::gao(
+            VI{1,5,11,36,95,281,781,2245,6336,18061, 51205},n-1));
     }
 }
 ```

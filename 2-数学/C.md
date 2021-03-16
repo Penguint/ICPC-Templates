@@ -7,11 +7,13 @@
 $$
 C(n, m) = C_{n}^{m} = {n \choose m} = \frac{n!}{m!(n-m)!}
 $$
+
 ### 广义组合数
 
 用于广义二项式定理中。
 
 n 扩展到整数域：
+
 $$
 {n \choose m} = 
 \begin{cases}
@@ -22,13 +24,17 @@ $$
 $$
 
 n 扩展到实数域：
+
 $$
 {r \choose k} = \frac{r(r-1)\cdots(r-k+1)}{k!} = \frac{r^{\underline{k}}}{k!} = \frac{(r)_k}{k!}
 $$
 
 ### 预处理阶乘
+
 支持 n < 1e6;
+
 预处理 $O(n)$, 查询 $O(1)$
+
 ```cpp
 // int fac();
 // int invfac();
@@ -42,7 +48,8 @@ inline int C(int n,int m) {
 ```c++
 int C(int m,int n,int p,int pk)   //处理组合数
 {
-	int nn = fac_pk(n, p, pk), mm = fac_pk(m, p, pk), nm = fac_pk(n - m, a, b), po=0;  //求阶乘
+	int nn = fac_pk(n, p, pk), mm = fac_pk(m, p, pk), 
+		nm = fac_pk(n - m, a, b), po=0;  //求阶乘
 	for (int i = n; i; i /= a) po += i / a;     //处理n^p中的p
 	for (int i = m; i; i /= a) po -= i / a;
 	for (int i = n - m; i; i /= a) po -= i / a;

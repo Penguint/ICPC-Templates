@@ -1,9 +1,9 @@
 <div style="text-align: center;">
 
-# ZJUT12的ICPC模板  <!-- omit in toc -->
+# Penguint 的 ICPC 模板  <!-- omit in toc -->
 
 ![ICPC](assets/icpc-logo.png)
 
-Collected & coded by **ZJUT12** with their **DETERMINATION**
+Collected & coded by **Penguint** with **ZJUT5**'s DETERMINATION
 
 </div>

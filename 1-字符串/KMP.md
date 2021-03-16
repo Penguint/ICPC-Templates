@@ -56,3 +56,4 @@ vector<int> KMP(string &s, string &str) {
     }
     return res;
 }
+```
