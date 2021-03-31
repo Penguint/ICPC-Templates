@@ -108,11 +108,16 @@ Polygon convex(Polygon p) {  // 凸包 convex hull
     for (int i=1; i<(int)p.size(); i++)
         if (p[i]<p[k]) k = i;
     swap(p[k], p[0]);
+
+    // 角度法极角排序
     for (int i=1; i<(int)p.size(); i++) {
         p2 d = p[i]-p[0]; 
         p[i].angle = atan2(d.y, d.x);
     }
     auto cmp = [](p2 a, p2 b) { return a.angle<b.angle; };
+    // 叉积法极角排序
+    // auto cmp = [&](p2 a, p2 b) { return sgn(det(a - p[0], b - p[0])) > 0; } 
+    
     sort(p.begin()+1, p.end(), cmp);
     Polygon res;
     res.push_back(p[0]);
