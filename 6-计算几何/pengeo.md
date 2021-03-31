@@ -26,6 +26,8 @@ db rtod(db r) { return r*180/PI; }
 // ===== 2D Point/Vector ===== {{{
 struct Point2 {
     db x, y;
+    db angle;
+
     Point2() {}
     Point2(db x, db y) : x(x), y(y) {}
     using p2 = Point2;
@@ -103,6 +105,12 @@ db area(Polygon p) {  // 多边形有向面积
         s += det(p[i], p[(i+1)%p.size()]);
     return s/2;
 }
+bool is_in(p2 a, Polygon p) {
+    int side = sgn(det(p[0] - p.back(), a - p.back()));
+    for (int i = 0; i < (int)p.size() - 1; i++)
+        if (side != sgn(det(p[i + 1] - p[i], a - p[i]))) return false;
+    return true;
+}
 Polygon convex(Polygon p) {  // 凸包 convex hull
     int k = 0;
     for (int i=1; i<(int)p.size(); i++)
@@ -116,7 +124,7 @@ Polygon convex(Polygon p) {  // 凸包 convex hull
     }
     auto cmp = [](p2 a, p2 b) { return a.angle<b.angle; };
     // 叉积法极角排序
-    // auto cmp = [&](p2 a, p2 b) { return sgn(det(a - p[0], b - p[0])) > 0; } 
+    // auto cmp = [&](p2 a, p2 b) { return sgn(det(a - p[0], b - p[0])) > 0; };
     
     sort(p.begin()+1, p.end(), cmp);
     Polygon res;
