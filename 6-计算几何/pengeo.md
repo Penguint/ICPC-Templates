@@ -83,13 +83,11 @@ inline bool is_rect_cross(const p2 &a1, const p2 &a2, const p2 &b1, const p2 &b2
     return is_range_cross(a1.x, a2.x, b1.x, b2.x) &&
            is_range_cross(a1.y, a2.y, b1.y, b2.y);
 }
-inline bool is_same_side(l2 l, p2 a, p2 b) {
-    return sgn(det(l.b-l.a, a-l.a))*sgn(det(l.b-l.a, b-l.a))<=0;
-}
 inline bool is_segment_cross(l2 a, l2 b) {
-    return is_rect_cross(a.a, a.b, b.a, b.b) &&  // 快速排斥实验
-           is_same_side(a, b.a, b.b) &&  // 跨立实验
-           is_same_side(b, a.a, a.b);
+    return 
+        // is_rect_cross(a.a, a.b, b.a, b.b) &&  // 快速排斥实验
+        sgn(det(a.b-a.a,b.a-a.a))*sgn(det(a.b-a.a,b.b-a.a))<=0 &&  // 跨立实验
+        sgn(det(b.b-b.a,a.a-b.a))*sgn(det(b.b-b.a,a.b-b.a))<=0;
 }
 p2 intersection(l2 a, l2 b) {
     db t = det(b.b-b.a, a.a-b.a)/det(a.b-a.a, b.b-b.a);
